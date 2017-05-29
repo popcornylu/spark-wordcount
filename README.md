@@ -1,9 +1,19 @@
 # Introduction
 
-This is a very very simple spark application. You can run this application in command with following command.
+This is a very very simple spark application. In this application, we show how to use [gradle shadowjar plugin](http://imperceptiblethoughts.com/shadow/) to create a shadow(uber) jar and then submit it to the spark cluster.
 
-    ./gradlew run    
+## How to Use
+
+1. Build the Shardow Jar (Uber Jar)
+
+    ```bash
+    ./gradlew shadowJar
+    ```
     
-This command will download all the jars to your local machine. No spark installation package is required, no settings are required, just issue the command and does work!!
+2. Submit the jar
+
+    ```bash
+    $SPARK_HOME/bin/spark-submit --master=<spark-master> build/libs/spark-wordcount-all.jar
+    ```
 
 Good luck and happy Sparking!!!

@@ -1,19 +1,38 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
 
-mainClassName = "idv.popcorny.WordCount"
+mainClassName = 'idv.popcornylu.spark.WordCount'
+repositories {
+    jcenter()
+}
 
 jar {
     manifest {
-        attributes 'Main-Class': "$mainClassName"
+        attributes 'Main-Class': mainClassName
     }
 }
 
-repositories {
-    mavenCentral()
-}
+configurations { providedCompile }
+
+sourceSets.main.compileClasspath += configurations.providedCompile
+sourceSets.test.compileClasspath += configurations.providedCompile
+sourceSets.test.runtimeClasspath += configurations.providedCompile
 
 dependencies {
-    compile 'org.apache.spark:spark-core_2.10:1.1.0'
+    compile 'org.slf4j:slf4j-api:1.7.18'
+    compile 'org.apache.commons:commons-lang3:3.5'
 
+    testCompile 'junit:junit:4.12'
+
+    // For scala
+    def sparkVersion = '2.1.0'
+    providedCompile "org.apache.spark:spark-sql_2.11:$sparkVersion"
+    providedCompile 'org.scala-lang:scala-library:2.11.8'
+    providedCompile 'org.scala-lang:scala-xml:2.11.0-M4'
 }
+
